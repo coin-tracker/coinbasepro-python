@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "coinbasepro-revived"
 version = "1.1.5"
-description = ""
+description = "Revived https://github.com/danpaquin/coinbasepro-python. Python package to interact with the coinbase pro api https://docs.pro.coinbase.com/."
 authors = ["me"]
 packages = [
   { include = "cbpro" }
