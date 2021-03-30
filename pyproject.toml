@@ -2,7 +2,10 @@
 name = "coinbasepro-python"
 version = "1.1.5"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["me"]
+packages = [
+  { include = "cbpro" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"
