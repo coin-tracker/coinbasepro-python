@@ -15,7 +15,7 @@ six = "^1.10.0"
 websocket-client = ">=0.40.0,<1.0.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.2"
+pytest = "^7.0.1"
 python-dateutil = "^2.7.5"
 
 [build-system]
