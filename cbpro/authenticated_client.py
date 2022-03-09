@@ -4,15 +4,17 @@
 #
 # For authenticated requests to the Coinbase exchange
 
-import hmac
-import hashlib
-import time
-import requests
 import base64
+import hashlib
+import hmac
 import json
+import time
+
+import requests
 from requests.auth import AuthBase
-from cbpro.public_client import PublicClient
+
 from cbpro.cbpro_auth import CBProAuth
+from cbpro.public_client import PublicClient
 
 
 class AuthenticatedClient(PublicClient):

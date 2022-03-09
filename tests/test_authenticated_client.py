@@ -1,7 +1,8 @@
-import pytest
 import json
 import time
 from itertools import islice
+
+import pytest
 from cbpro.authenticated_client import AuthenticatedClient
 
 

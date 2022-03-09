@@ -1,9 +1,10 @@
-import pytest
+import datetime
 import time
 from itertools import islice
-import datetime
-from dateutil.relativedelta import relativedelta
+
+import pytest
 from cbpro.public_client import PublicClient
+from dateutil.relativedelta import relativedelta
 
 
 @pytest.fixture(scope='module')
