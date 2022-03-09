@@ -36,7 +36,7 @@ the MIT License – please take the following message to heart:_
 ## Getting Started
 
 This README is documentation on the syntax of the python client presented in
-this repository. See function docstrings for full syntax details.  
+this repository. See function docstrings for full syntax details.
 **This API attempts to present a clean interface to CB Pro, but in order to use it
 to its full potential, you must familiarize yourself with the official CB Pro
 documentation.**
@@ -292,97 +292,6 @@ withdrawParams = {
 auth_client.withdraw(withdrawParams)
 ```
 
-### WebsocketClient
-
-If you would like to receive real-time market updates, you must subscribe to the
-[websocket feed](https://docs.pro.coinbase.com/#websocket-feed).
-
-#### Subscribe to a single product
-
-```python
-import cbpro
-
-# Parameters are optional
-wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com",
-                                products="BTC-USD",
-                                channels=["ticker"])
-# Do other stuff...
-wsClient.close()
-```
-
-#### Subscribe to multiple products
-
-```python
-import cbpro
-# Parameters are optional
-wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com",
-                                products=["BTC-USD", "ETH-USD"],
-                                channels=["ticker"])
-# Do other stuff...
-wsClient.close()
-```
-
-### WebsocketClient + Mongodb
-
-The `WebsocketClient` now supports data gathering via MongoDB. Given a
-MongoDB collection, the `WebsocketClient` will stream results directly into
-the database collection.
-
-```python
-# import PyMongo and connect to a local, running Mongo instance
-from pymongo import MongoClient
-import cbpro
-mongo_client = MongoClient('mongodb://localhost:27017/')
-
-# specify the database and collection
-db = mongo_client.cryptocurrency_database
-BTC_collection = db.BTC_collection
-
-# instantiate a WebsocketClient instance, with a Mongo collection as a parameter
-wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com", products="BTC-USD",
-    mongo_collection=BTC_collection, should_print=False)
-wsClient.start()
-```
-
-### WebsocketClient Methods
-
-The `WebsocketClient` subscribes in a separate thread upon initialization.
-There are three methods which you could overwrite (before initialization) so it
-can react to the data streaming in. The current client is a template used for
-illustration purposes only.
-
-- onOpen - called once, _immediately before_ the socket connection is made, this
-  is where you want to add initial parameters.
-- onMessage - called once for every message that arrives and accepts one
-  argument that contains the message of dict type.
-- on_close - called once after the websocket has been closed.
-- close - call this method to close the websocket connection (do not overwrite).
-
-```python
-import cbpro, time
-class myWebsocketClient(cbpro.WebsocketClient):
-    def on_open(self):
-        self.url = "wss://ws-feed.pro.coinbase.com/"
-        self.products = ["LTC-USD"]
-        self.message_count = 0
-        print("Lets count the messages!")
-    def on_message(self, msg):
-        self.message_count += 1
-        if 'price' in msg and 'type' in msg:
-            print ("Message type:", msg["type"],
-                   "\t@ {:.3f}".format(float(msg["price"])))
-    def on_close(self):
-        print("-- Goodbye! --")
-
-wsClient = myWebsocketClient()
-wsClient.start()
-print(wsClient.url, wsClient.products)
-while (wsClient.message_count < 500):
-    print ("\nmessage_count =", "{} \n".format(wsClient.message_count))
-    time.sleep(1)
-wsClient.close()
-```
-
 ## Testing
 
 A test suite is under development. Tests for the authenticated client require a
@@ -392,20 +301,6 @@ file accordingly. To run the tests, start in the project directory and run
 
 ```
 python -m pytest
-```
-
-### Real-time OrderBook
-
-The `OrderBook` subscribes to a websocket and keeps a real-time record of
-the orderbook for the product_id input. Please provide your feedback for future
-improvements.
-
-```python
-import cbpro, time
-order_book = cbpro.OrderBook(product_id='BTC-USD')
-order_book.start()
-time.sleep(10)
-order_book.close()
 ```
 
 ### Testing
